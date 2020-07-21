@@ -14,7 +14,7 @@
     <div class="row">
       <div class="col-xs-12">
        <nav class="nav navbar-nav navbar-left">
-            <span class="title" >Bookers</span>
+            <span class="logo" >Bookers</span>
           </nav>
             <ul class="nav navbar-nav navbar-right">
               <% if user_signed_in? %>
@@ -64,13 +64,13 @@
       </div>
     </div>
   </div>
+</header>
+<div class="container main">
  <% if flash[:notice] %>
       <div class="flash">
         <%= flash[:notice] %>
       </div>
       <% end %>
-    </header><!-- /header -->
-<div class="container main">
     <%= yield %>
   </div>
     <footer>

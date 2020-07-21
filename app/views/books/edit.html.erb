@@ -9,24 +9,17 @@
 					<% @book.errors.full_messages.each do |msg| %>
 						<li class="error_messages"><%= msg %></li>
 					<% end %>
-					</ul>
+					</ul> c
 				</div>
 			<% end %>
 			<%= form_for(@book) do |f| %>
-		   <div class="field row">
-			<p>Title</p>
-			<%= f.text_field :title, class: "col-xs-12" %>
-		   </div>
-		   <div class="field row">
-			<p>Opinipn</p>
-			<%= f.text_area :body, class: "col-xs-12" %>
-		   </div>
-			<div class="field row">
-			<br><%= f.submit "Update Book", class: "btn btn-primary col-xs-12"%></br>
-		    </div>
-		<% end %> 
-		<%= link_to "Show", @book, class: "book_#{@book.id}" %>
-		   |
-		<%= link_to "Back", books_path, class: "back" %>
+				<label for="inputTitle">Title</label>
+				<%= f.text_field :title, style: "min-width: 100%;", id: "inputTitle" %><br>
+				<label for="inputOpinion">Opinion</label>
+				<%= f.text_area :body, rows: "3", style: "min-width: 100%;", id: "inputOpinion" %><br>
+				<%= f.submit "Update Book", class: "btn btn-block btn-primary" %><br>
+			<% end %>
+			<%= link_to "Show", book_path(@book) %>
+            <%= link_to "Back", books_path %>
 		</div>
 	</div>
