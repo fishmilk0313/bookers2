@@ -13,8 +13,46 @@
 				<td>intrduction</td>
 				<td><%= user.introduction %></td>
 			</tr>
+			<tr>
+				<td>following</td>
+				<td><% user ||= current_user %>
+				  <div class="stats">
+				    <a href="<%= following_user_path(@user) %>">
+				      <strong id="following" class="stat">
+				       <%= user.followings.count %>
+				      </strong>
+				    </a>
+				   </div>
+          		</td>
+          	</tr>
+          	<tr>
+          	    <td>followers</td>
+			<td><% user ||= current_user %>
+			  <div class="stats">
+			   <a href="<%= followers_user_path(@user) %>">
+			     <strong id="followers" class="stat">
+			      <%= user.followers.count %>
+			     </strong>
+			   </a> 
+			   </div>
+			</td>
 		</tbody>
 	</table>
+	<td>
+<% unless current_user == user %>
+  <% if current_user.following?(user) %>
+    <%= form_for(current_user.relationships.find_by(follow_id: user.id), html: { method: :delete }) do |f| %>
+      <%= hidden_field_tag :follow_id, user.id %>
+      <%= f.submit 'Unfollow', class: 'btn btn-danger btn-block' %>
+    <% end %>
+  <% else %>
+    <%= form_with(url: relationships_path, method: :post, local: true) do |f| %>
+      <%= hidden_field_tag :follow_id, user.id %>
+      <%= f.submit 'Follow', class: 'btn btn-primary btn-block' %>
+    <% end %>
+  <% end %>
+<% end %> 
+</td>
 	<%if user.id == current_user.id %>
 		<%= link_to edit_user_path(current_user.id) do %>
 		<button type="button" class="btn btn-default btn-block"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
