@@ -10,16 +10,16 @@
     </thead>
    <tbody>
 	 <% @user.followers.each do |user| %>
-	     <td><%= attachment_image_tag book.user, :profile_image, format: 'jpeg', size: '50x50', fallback: "no_image.jpg" %>
+	     <td><%= attachment_image_tag user, :profile_image, format: 'jpeg', size: '50x50', fallback: "no_image.jpg" %>
 	     </td>
-	      <td>  <%= @user.name %> </td>
+	      <td>  <%= user.name %> </td>
 	      <td>
 	       <div class="stats">
-		    <a href="<%= following_user_path(@user) %>">
+		    <%=link_to following_user_path(user) do%>
 			    <strong id="following" class="stat">
 				     <%= user.followings.count %>
 				 </strong>following
-			</a>
+				 <% end %>
 		    </div>
           </td>
           <% user ||= current_user %>

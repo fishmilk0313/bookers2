@@ -1,34 +1,31 @@
 <td><% user ||= current_user %>
   <div class="stats">
-    <a href="<%= following_user_path(@user) %>">
-      <strong id="following" class="stat">
-       <%= user.followings.count %>
-      </strong>
-       following
-       </a>
+    <%=link_to following_user_path(user) do%>
+          <strong id="following" class="stat">
+             <%= user.followings.count %>
+         </strong>following
+         <% end %>
        </div>
           </td> 
 <td><% user ||= current_user %>
   <div class="stats">
-   <a href="<%= followers_user_path(@user) %>">
-     <strong id="followers" class="stat">
-      <%= user.followers.count %>
-     </strong>
-      followers
-   </a> 
+   <%=link_to followers_user_path(user) do%>
+          <strong id="followers" class="stat">
+             <%= user.followers.count %>
+         </strong>followers
+         <% end %>
    </div>
 </td>
 <td>
 <% unless current_user == user %>
   <% if current_user.following?(user) %>
-    <%= form_for(current_user.relationships.find_by(follow_id: user.id), html: { method: :delete }) do |f| %>
-      <%= hidden_field_tag :follow_id, user.id %>
-      <%= f.submit 'Unfollow', class: 'btn btn-danger btn-block' %>
-    <% end %>
+    <%= form_for(current_user.following_relationships.find_by(following_id: user.id), html: { method: :delete }) do |f| %>
+    <%= f.submit "Unfollow", class: "btn btn-large follow-btn" %>
+  <% end %>
   <% else %>
-    <%= form_with(url: relationships_path, method: :post, local: true) do |f| %>
-      <%= hidden_field_tag :follow_id, user.id %>
-      <%= f.submit 'Follow', class: 'btn btn-primary btn-block' %>
+    <%= form_for(current_user.following_relationships.build(following_id: user.id)) do |f| %>
+     <div><%= f.hidden_field :following_id %></div>
+     <%= f.submit "Follow", class: "btn btn-large btn-primary follow-btn" %>
     <% end %>
   <% end %>
 <% end %> 
