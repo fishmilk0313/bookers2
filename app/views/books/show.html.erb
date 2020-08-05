@@ -16,23 +16,10 @@
 						<td><%= @book_show.title %></td>
 						<td><%= @book_show.body %></td>
 						<td>
-							<% if @book_show.favorited_by?(current_user) %>
-								<li>
-								   <%= link_to book_favorites_path(@book_show), method: :delete do %>
-								    <i class="fa fa-heart" aria-hidden="true" style="color: red;"></i>
-								    <%= @book_show.favorites.count %> いいね
-								  <% end %>
-								</li>
-							<% else %>
-								<li>
-								 <%= link_to book_favorites_path(@book_show), method: :post do %>
-								    <i class="fa fa-heart-o" aria-hidden="true"></i>
-								    <%= @book_show.favorites.count %>
-								  <% end %>
-								</li>
-							<% end %>
+							<div id ="favorites_buttons_<%= @book_show.id%>">
+							 <%= render partial: 'favorites/favorites', locals: { book: @book_show} %>
+							</div>
 						</td>
-						
 						<% if @user.id == current_user.id %>
 							<td>
 								<%= link_to edit_book_path(@book_show.id) do %>
@@ -51,47 +38,15 @@
 									<%= @book_show.user.name %>
 								</li>
 								<li>
-							<%=link_to "#{@book_show.book_comments.count}コメント", book_path(@book_show.id) %>
-						</li>
-					</ul>
-				</td>
+							       <%=link_to "#{@book_show.book_comments.count}コメント", book_path(@book_show.id) %>
+						        </li>
+					        </ul>
+				        </td>
 					</tr>
-					<ol>
-				  <% @book_show.book_comments.each do |book_comment| %>
-				    <li class="comment">
-				      <div class="comment-body bb">
-				        <div class="comment-avatar">
-				          <div class="avatar">
-				            <%= attachment_image_tag @user_show, :profile_image, format: 'jpeg', size: '50x50', fallback: "no_image.jpg" %>
-				        </div>
-				        <div class="comment-text">
-				          <div class="comment-author clearfix">
-				            <a href="#" class="link-author"><%= book_comment.user.name %></a>
-				            <span class="comment-meta">
-				              <span class="comment-date"><%= book_comment.created_at.strftime('%Y/%m/%d') %></span>
-				            </span>
-				          </div>
-				          <div class="comment-entry"><%= book_comment.comment %></div>
-				        </div>
-				        <% if book_comment.user == current_user %>
-				        <div>
-				        	<%= link_to "delete", book_book_comment_path(book_comment.book, book_comment), method: :delete, class: "btn btn-danger pull-rigth" %>
-				        </div>
-				        <% end %>
-				      </div>
-				    </li>
-				  <% end %>
-				</ol>
-
 				</tbody>
 			</table>
-			<%= form_for [@book_show, @book_comment] do |f| %>
-			<div class="row">
-				<div class="col-sm-12">
-					<%= f.text_area :comment, rows:'5', class: "form-control",placeholder: "コメントをここに" %>
+				 <div id="comments_area">
+				   <%= render partial: 'book_comments/index', locals: {comments: @book_comments, book: @book_show}%>
 				</div>
-			</div>
-			<%= f.submit "送信する", class: "btn btn-lg btn-base-1 mt-20 pull-right" %>
-			<% end %>
-		</div>
+				<%= render partial: 'book_comments/form', locals: {comment: @book_comment, book: @book_show} %>
 	</div>
